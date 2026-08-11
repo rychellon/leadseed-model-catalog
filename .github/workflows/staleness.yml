@@ -1,0 +1,34 @@
+name: Surface stale prices
+
+on:
+  schedule:
+    - cron: "31 8 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run stale-report > stale-prices.md
+      - name: Open or update the monthly issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          title="catalog: stale prices $(date -u +%Y-%m)"
+          existing=$(gh issue list --state open --search "$title in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue edit "$existing" --body-file stale-prices.md
+          else
+            gh issue create --title "$title" --body-file stale-prices.md
+          fi

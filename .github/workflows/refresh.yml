@@ -1,0 +1,39 @@
+name: Refresh provider catalog
+
+on:
+  schedule:
+    - cron: "17 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run refresh
+        env:
+          FAL_KEY: ${{ secrets.FAL_KEY }}
+          MUAPI_KEY: ${{ secrets.MUAPI_KEY }}
+      - id: summary
+        shell: bash
+        run: echo "title=$(cat .refresh/title.txt)" >> "$GITHUB_OUTPUT"
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          branch: bot/weekly-catalog-refresh
+          delete-branch: true
+          commit-message: "catalog: refresh provider data"
+          title: ${{ steps.summary.outputs.title }}
+          body-path: .refresh/body.md
+          add-paths: |
+            catalog/**
+            raw/**
+          draft: true

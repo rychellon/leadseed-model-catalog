@@ -1,0 +1,15 @@
+{
+  "name": "leadseed-model-catalog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate": "node scripts/validate.mjs",
+    "test": "node --test",
+    "refresh": "node scripts/refresh.mjs",
+    "stale-report": "node scripts/stale-report.mjs"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1"
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/rychellon/leadseed-model-catalog/schema/catalog.schema.json",
+  "title": "LeadSeed model catalog file",
+  "oneOf": [
+    { "$ref": "#/$defs/modalityFile" },
+    { "$ref": "#/$defs/canonicalArgsFile" }
+  ],
+  "$defs": {
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "provider": {
+      "type": "object",
+      "required": ["id", "supports", "default_args", "output_path"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "unit_price_usd": { "type": ["number", "null"], "minimum": 0 },
+        "unit_price_per_second_usd": { "type": ["number", "null"], "minimum": 0 },
+        "unit_price_per_second_usd_720p": { "type": ["number", "null"], "minimum": 0 },
+        "unit_price_per_second_usd_audio_off": { "type": ["number", "null"], "minimum": 0 },
+        "pricing_tiers_per_second_usd": {
+          "type": "object",
+          "additionalProperties": { "type": ["number", "string"] }
+        },
+        "price_unit": { "type": "string", "minLength": 1 },
+        "price_note": { "type": "string", "minLength": 1 },
+        "price_last_verified": { "$ref": "#/$defs/date" },
+        "price_stale_ack": { "type": "string", "minLength": 1 },
+        "price_source": { "type": "string", "minLength": 1 },
+        "supports": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "default_args": { "type": "object" },
+        "output_path": { "type": "string", "minLength": 1 },
+        "ref_arg": { "type": "string", "minLength": 1 },
+        "ref_kind": { "enum": ["scalar", "list"] },
+        "note": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "model": {
+      "type": "object",
+      "required": ["providers"],
+      "properties": {
+        "best_for": { "type": "string", "minLength": 1 },
+        "supports_image_input": { "type": "boolean" },
+        "edit_variant": { "type": "string", "minLength": 1 },
+        "providers": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "$ref": "#/$defs/provider" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "modality": {
+      "type": "object",
+      "required": ["default", "models"],
+      "properties": {
+        "default": { "type": "string", "minLength": 1 },
+        "models": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "$ref": "#/$defs/model" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "modalityFile": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 1,
+      "properties": {
+        "image": { "$ref": "#/$defs/modality" },
+        "video_image_to_video": { "$ref": "#/$defs/modality" },
+        "upscale_image": { "$ref": "#/$defs/modality" },
+        "upscale_video": { "$ref": "#/$defs/modality" }
+      },
+      "additionalProperties": false
+    },
+    "canonicalArgsFile": {
+      "type": "object",
+      "required": ["canonical_args"],
+      "properties": {
+        "canonical_args": {
+          "type": "object",
+          "required": ["names"],
+          "properties": {
+            "_comment": { "type": "string" },
+            "names": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": { "type": "string", "minLength": 1 }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
