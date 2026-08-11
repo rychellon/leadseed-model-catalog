@@ -7,10 +7,18 @@ const RAW_DIR = path.join(ROOT, "raw");
 const OUT_DIR = path.join(ROOT, ".refresh");
 const today = new Date().toISOString().slice(0, 10);
 
-async function fetchText(url, headers = {}) {
-  const response = await fetch(url, { headers });
-  if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
-  return response.text();
+async function fetchText(url, headers = {}, attempts = 4) {
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    const response = await fetch(url, { headers });
+    if (response.ok) return response.text();
+    if (attempt === attempts || (response.status !== 429 && response.status < 500)) {
+      throw new Error(`${url}: HTTP ${response.status}`);
+    }
+    const retryAfter = Number(response.headers.get("retry-after"));
+    const delay = Number.isFinite(retryAfter) ? retryAfter * 1_000 : 500 * (2 ** (attempt - 1));
+    await new Promise((resolve) => setTimeout(resolve, delay));
+  }
+  throw new Error(`${url}: exhausted retries`);
 }
 
 async function fetchFal() {
@@ -39,17 +47,16 @@ async function fetchFal() {
       if (model.providers?.fal?.id) ids.add(model.providers.fal.id);
     }
   }
-  const pricingDir = path.join(RAW_DIR, "fal-pricing");
-  fs.mkdirSync(pricingDir, { recursive: true });
+  const pricingUrl = new URL("https://api.fal.ai/v1/models/pricing");
+  for (const id of ids) pricingUrl.searchParams.append("endpoint_id", id);
+  const pricingText = await fetchText(pricingUrl, { Authorization: `Key ${key}` });
+  fs.writeFileSync(path.join(RAW_DIR, "fal-pricing.json"), pricingText);
+  const pricingPayload = JSON.parse(pricingText);
   const prices = new Map();
-  for (const id of ids) {
-    const url = new URL("https://api.fal.ai/v1/models/pricing");
-    url.searchParams.set("endpoint_id", id);
-    const text = await fetchText(url, { Authorization: `Key ${key}` });
-    fs.writeFileSync(path.join(pricingDir, `${encodeURIComponent(id)}.json`), text);
-    const payload = JSON.parse(text);
-    const row = payload.prices?.find((item) => item.endpoint_id === id) ?? payload.prices?.[0];
-    if (typeof row?.unit_price === "number") prices.set(id, row.unit_price);
+  for (const row of pricingPayload.prices ?? []) {
+    if (ids.has(row.endpoint_id) && typeof row.unit_price === "number") {
+      prices.set(row.endpoint_id, row.unit_price);
+    }
   }
   return prices;
 }
