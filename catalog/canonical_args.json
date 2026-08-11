@@ -1,0 +1,14 @@
+{
+  "canonical_args": {
+    "_comment": "Internal arg names the CLI speaks. Each provider block translates them.",
+    "names": [
+      "prompt",
+      "aspect_ratio",
+      "resolution",
+      "num_images",
+      "seed",
+      "duration",
+      "upscale_factor"
+    ]
+  }
+}

@@ -1,0 +1,261 @@
+{
+  "image": {
+    "default": "nano-banana-pro",
+    "models": {
+      "nano-banana-pro": {
+        "best_for": "Photorealistic and stylized image gen. Strong prompt adherence with natural-language descriptive prompts. Current default. TEXT-TO-IMAGE ONLY — auto-switches to nano-banana-pro-edit when --input-image is passed.",
+        "supports_image_input": false,
+        "edit_variant": "nano-banana-pro-edit",
+        "providers": {
+          "fal": {
+            "id": "fal-ai/nano-banana-pro",
+            "unit_price_usd": 0.15,
+            "price_last_verified": "2026-08-11",
+            "supports": [
+              "prompt",
+              "aspect_ratio",
+              "resolution",
+              "num_images",
+              "seed"
+            ],
+            "default_args": {
+              "aspect_ratio": "16:9",
+              "resolution": "2K",
+              "num_images": 1
+            },
+            "output_path": "images[0].url"
+          },
+          "muapi": {
+            "id": "nano-banana-pro",
+            "unit_price_usd": null,
+            "supports": [
+              "prompt",
+              "aspect_ratio",
+              "resolution"
+            ],
+            "note": "No seed and no num_images. Jobs needing either are routed to Fal.",
+            "default_args": {
+              "aspect_ratio": "1:1",
+              "resolution": "2k"
+            },
+            "output_path": "outputs[0]"
+          }
+        }
+      },
+      "nano-banana-pro-edit": {
+        "best_for": "Image-to-image editing variant of Nano Banana Pro. Honors reference photos for identity/composition preservation. Used automatically when --input-image is passed.",
+        "supports_image_input": true,
+        "providers": {
+          "fal": {
+            "id": "fal-ai/nano-banana-pro/edit",
+            "unit_price_usd": 0.15,
+            "price_last_verified": "2026-08-11",
+            "supports": [
+              "prompt",
+              "aspect_ratio",
+              "resolution",
+              "num_images",
+              "seed"
+            ],
+            "ref_arg": "image_urls",
+            "ref_kind": "list",
+            "default_args": {
+              "aspect_ratio": "1:1",
+              "resolution": "2K",
+              "num_images": 1
+            },
+            "output_path": "images[0].url"
+          },
+          "muapi": {
+            "id": "nano-banana-pro-edit",
+            "unit_price_usd": null,
+            "supports": [
+              "prompt",
+              "aspect_ratio",
+              "resolution"
+            ],
+            "ref_arg": "images_list",
+            "ref_kind": "list",
+            "default_args": {
+              "aspect_ratio": "1:1",
+              "resolution": "2k"
+            },
+            "output_path": "outputs[0]"
+          }
+        }
+      },
+      "nano-banana-2": {
+        "best_for": "Gemini Flash Image architecture. Faster and cheaper than Nano Banana Pro. Accurate text rendering, character consistency for up to 5 people. TEXT-TO-IMAGE ONLY.",
+        "supports_image_input": false,
+        "edit_variant": "nano-banana-2-edit",
+        "providers": {
+          "fal": {
+            "id": "fal-ai/nano-banana-2",
+            "unit_price_usd": 0.08,
+            "price_last_verified": "2026-08-11",
+            "supports": [
+              "prompt",
+              "aspect_ratio",
+              "resolution",
+              "num_images",
+              "seed"
+            ],
+            "default_args": {
+              "aspect_ratio": "16:9",
+              "resolution": "2K",
+              "num_images": 1
+            },
+            "output_path": "images[0].url"
+          },
+          "muapi": {
+            "id": "nano-banana-2",
+            "unit_price_usd": null,
+            "supports": [
+              "prompt",
+              "aspect_ratio",
+              "resolution"
+            ],
+            "default_args": {
+              "aspect_ratio": "1:1",
+              "resolution": "2k"
+            },
+            "output_path": "outputs[0]"
+          }
+        }
+      },
+      "nano-banana-2-edit": {
+        "best_for": "Edit variant of Nano Banana 2. FAL ONLY — Muapi has no plain nano-banana-2 edit endpoint (only nano-banana-2-lite-edit), so this model always routes to Fal.",
+        "supports_image_input": true,
+        "providers": {
+          "fal": {
+            "id": "fal-ai/nano-banana-2/edit",
+            "unit_price_usd": 0.08,
+            "price_last_verified": "2026-08-11",
+            "supports": [
+              "prompt",
+              "aspect_ratio",
+              "resolution",
+              "num_images",
+              "seed"
+            ],
+            "ref_arg": "image_urls",
+            "ref_kind": "list",
+            "default_args": {
+              "aspect_ratio": "1:1",
+              "resolution": "2K",
+              "num_images": 1
+            },
+            "output_path": "images[0].url"
+          }
+        }
+      },
+      "nano-banana": {
+        "best_for": "Budget Nano Banana — the cheap tier for tests, drafts and high-volume work. No resolution param on either provider (do not pass --resolution). TEXT-TO-IMAGE ONLY.",
+        "supports_image_input": false,
+        "edit_variant": "nano-banana-edit",
+        "providers": {
+          "fal": {
+            "id": "fal-ai/nano-banana",
+            "unit_price_usd": 0.0398,
+            "price_last_verified": "2026-08-11",
+            "supports": [
+              "prompt",
+              "aspect_ratio",
+              "num_images",
+              "seed"
+            ],
+            "default_args": {
+              "aspect_ratio": "1:1",
+              "num_images": 1
+            },
+            "output_path": "images[0].url"
+          },
+          "muapi": {
+            "id": "nano-banana",
+            "unit_price_usd": null,
+            "supports": [
+              "prompt",
+              "aspect_ratio"
+            ],
+            "default_args": {
+              "aspect_ratio": "1:1"
+            },
+            "output_path": "outputs[0]"
+          }
+        }
+      },
+      "nano-banana-edit": {
+        "best_for": "Edit variant of the budget Nano Banana. Use when passing --input-image on a cheap draft.",
+        "supports_image_input": true,
+        "providers": {
+          "fal": {
+            "id": "fal-ai/nano-banana/edit",
+            "unit_price_usd": 0.0398,
+            "price_last_verified": "2026-08-11",
+            "supports": [
+              "prompt",
+              "aspect_ratio",
+              "num_images",
+              "seed"
+            ],
+            "ref_arg": "image_urls",
+            "ref_kind": "list",
+            "default_args": {
+              "aspect_ratio": "1:1",
+              "num_images": 1
+            },
+            "output_path": "images[0].url"
+          },
+          "muapi": {
+            "id": "nano-banana-edit",
+            "unit_price_usd": null,
+            "supports": [
+              "prompt",
+              "aspect_ratio"
+            ],
+            "ref_arg": "images_list",
+            "ref_kind": "list",
+            "default_args": {
+              "aspect_ratio": "Auto"
+            },
+            "output_path": "outputs[0]"
+          }
+        }
+      },
+      "gpt-image-2": {
+        "best_for": "Alternative when Nano Banana misinterprets complex multi-subject scenes. Stylized output. Fal bills this per 'unit', not per image — check cost before volume runs.",
+        "supports_image_input": false,
+        "providers": {
+          "fal": {
+            "id": "fal-ai/gpt-image-2",
+            "unit_price_usd": 1,
+            "price_unit": "units",
+            "price_last_verified": "2026-08-11",
+            "supports": [
+              "prompt",
+              "num_images"
+            ],
+            "default_args": {
+              "num_images": 1
+            },
+            "output_path": "images[0].url"
+          },
+          "muapi": {
+            "id": "gpt-image-2-text-to-image",
+            "unit_price_usd": null,
+            "supports": [
+              "prompt",
+              "aspect_ratio",
+              "resolution"
+            ],
+            "default_args": {
+              "aspect_ratio": "auto",
+              "resolution": "2K"
+            },
+            "output_path": "outputs[0]"
+          }
+        }
+      }
+    }
+  }
+}

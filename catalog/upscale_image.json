@@ -1,0 +1,35 @@
+{
+  "upscale_image": {
+    "default": "topaz-image",
+    "models": {
+      "topaz-image": {
+        "best_for": "Topaz image upscaler. Sharpens + upscales photos. Scales by a single upscale_factor so aspect ratio is always preserved. Cheap (per-image, not per-second).",
+        "providers": {
+          "fal": {
+            "id": "fal-ai/topaz/upscale/image",
+            "supports": [
+              "upscale_factor"
+            ],
+            "ref_arg": "image_url",
+            "ref_kind": "scalar",
+            "default_args": {
+              "model": "Standard V2"
+            },
+            "output_path": "image.url"
+          },
+          "muapi": {
+            "id": "topaz-image-upscale",
+            "unit_price_usd": null,
+            "supports": [
+              "upscale_factor"
+            ],
+            "ref_arg": "image_url",
+            "ref_kind": "scalar",
+            "default_args": {},
+            "output_path": "outputs[0]"
+          }
+        }
+      }
+    }
+  }
+}

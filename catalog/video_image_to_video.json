@@ -1,0 +1,165 @@
+{
+  "video_image_to_video": {
+    "default": "seedance-2-pro",
+    "models": {
+      "seedance-2-pro": {
+        "best_for": "ByteDance flagship image-to-video. Cinematic motion, synchronized audio, start/end frame control. Strong general-purpose default. Audio included at no extra cost.",
+        "providers": {
+          "fal": {
+            "id": "bytedance/seedance-2.0/image-to-video",
+            "unit_price_per_second_usd": 0.682,
+            "unit_price_per_second_usd_720p": 0.3034,
+          "price_note": "Per second of OUTPUT at 1080p. Drop to 720p for cheap drafts.",
+          "price_last_verified": "2026-06-12",
+          "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
+            "supports": [
+              "prompt",
+              "duration",
+              "resolution",
+              "seed"
+            ],
+            "ref_arg": "image_url",
+            "ref_kind": "scalar",
+            "default_args": {
+              "duration": 5,
+              "resolution": "1080p"
+            },
+            "output_path": "video.url"
+          },
+          "muapi": {
+            "id": "seedance-2-image-to-video",
+            "unit_price_per_second_usd": null,
+            "supports": [
+              "prompt",
+              "duration",
+              "aspect_ratio"
+            ],
+            "note": "No resolution and no seed. Takes references as a list.",
+            "ref_arg": "images_list",
+            "ref_kind": "list",
+            "default_args": {
+              "duration": 5,
+              "aspect_ratio": "16:9"
+            },
+            "output_path": "outputs[0]"
+          }
+        }
+      },
+      "seedance-2-fast": {
+        "best_for": "Faster, cheaper Seedance. Use for iteration drafts. Fal tier caps at 720p.",
+        "providers": {
+          "fal": {
+            "id": "bytedance/seedance-2.0/fast/image-to-video",
+            "unit_price_per_second_usd": 0.2419,
+          "price_note": "Fast tier caps at 720p.",
+          "price_last_verified": "2026-06-12",
+          "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
+            "supports": [
+              "prompt",
+              "duration",
+              "resolution",
+              "seed"
+            ],
+            "ref_arg": "image_url",
+            "ref_kind": "scalar",
+            "default_args": {
+              "duration": 5,
+              "resolution": "720p"
+            },
+            "output_path": "video.url"
+          },
+          "muapi": {
+            "id": "seedance-2-image-to-video-fast",
+            "unit_price_per_second_usd": null,
+            "supports": [
+              "prompt",
+              "duration",
+              "aspect_ratio"
+            ],
+            "ref_arg": "images_list",
+            "ref_kind": "list",
+            "default_args": {
+              "duration": 5,
+              "aspect_ratio": "16:9"
+            },
+            "output_path": "outputs[0]"
+          }
+        }
+      },
+      "kling-v3-pro": {
+        "best_for": "Top-tier Kling. Cinematic visuals, fluid motion, native audio. Strong alternative when Seedance feels stiff.",
+        "providers": {
+          "fal": {
+            "id": "fal-ai/kling-video/v3/pro/image-to-video",
+            "unit_price_per_second_usd": 0.168,
+          "unit_price_per_second_usd_audio_off": 0.112,
+          "price_last_verified": "2026-05-21",
+          "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
+            "supports": [
+              "prompt",
+              "duration",
+              "seed"
+            ],
+            "ref_arg": "image_url",
+            "ref_kind": "scalar",
+            "default_args": {
+              "duration": 5
+            },
+            "output_path": "video.url"
+          },
+          "muapi": {
+            "id": "kling-v3.0-pro-image-to-video",
+            "unit_price_per_second_usd": null,
+            "supports": [
+              "prompt",
+              "duration"
+            ],
+            "note": "Muapi's Kling takes image_url (scalar), unlike its Seedance which takes images_list.",
+            "ref_arg": "image_url",
+            "ref_kind": "scalar",
+            "default_args": {
+              "duration": 5
+            },
+            "output_path": "outputs[0]"
+          }
+        }
+      },
+      "kling-v3-4k": {
+        "best_for": "Native 4K Kling. Use only when 4K final delivery is required. Slower and more expensive.",
+        "providers": {
+          "fal": {
+            "id": "fal-ai/kling-video/v3/4k/image-to-video",
+          "unit_price_per_second_usd": 0.42,
+          "price_last_verified": "2026-05-21",
+          "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
+            "supports": [
+              "prompt",
+              "duration",
+              "seed"
+            ],
+            "ref_arg": "image_url",
+            "ref_kind": "scalar",
+            "default_args": {
+              "duration": 5
+            },
+            "output_path": "video.url"
+          },
+          "muapi": {
+            "id": "kling-v3.0-4k-image-to-video",
+            "unit_price_per_second_usd": null,
+            "supports": [
+              "prompt",
+              "duration"
+            ],
+            "ref_arg": "image_url",
+            "ref_kind": "scalar",
+            "default_args": {
+              "duration": 5
+            },
+            "output_path": "outputs[0]"
+          }
+        }
+      }
+    }
+  }
+}
