@@ -27,6 +27,17 @@
             "ref_kind": "scalar",
             "default_args": {},
             "output_path": "outputs[0]"
+          },
+          "kie": {
+            "id": "topaz/image-upscale",
+            "unit_price_usd": null,
+            "supports": [
+              "upscale_factor"
+            ],
+            "ref_arg": "image_url",
+            "ref_kind": "scalar",
+            "default_args": {},
+            "output_path": "outputs[0]"
           }
         }
       }

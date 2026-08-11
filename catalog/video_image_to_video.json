@@ -9,9 +9,9 @@
             "id": "bytedance/seedance-2.0/image-to-video",
             "unit_price_per_second_usd": 0.682,
             "unit_price_per_second_usd_720p": 0.3034,
-          "price_note": "Per second of OUTPUT at 1080p. Drop to 720p for cheap drafts.",
-          "price_last_verified": "2026-06-12",
-          "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
+            "price_note": "Per second of OUTPUT at 1080p. Drop to 720p for cheap drafts.",
+            "price_last_verified": "2026-06-12",
+            "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
             "supports": [
               "prompt",
               "duration",
@@ -42,6 +42,24 @@
               "aspect_ratio": "16:9"
             },
             "output_path": "outputs[0]"
+          },
+          "kie": {
+            "id": "bytedance/seedance-2",
+            "unit_price_per_second_usd": 0.057,
+            "price_last_verified": "2026-08-11",
+            "price_source": "https://kie.ai/pricing",
+            "price_note": "Kie's published Seedance 2 price at the 720p default. Explicit resolution requests route elsewhere because Kie does not publish a tier table.",
+            "supports": [
+              "prompt",
+              "duration"
+            ],
+            "ref_arg": "first_frame_url",
+            "ref_kind": "scalar",
+            "default_args": {
+              "duration": 5,
+              "resolution": "720p"
+            },
+            "output_path": "outputs[0]"
           }
         }
       },
@@ -51,9 +69,9 @@
           "fal": {
             "id": "bytedance/seedance-2.0/fast/image-to-video",
             "unit_price_per_second_usd": 0.2419,
-          "price_note": "Fast tier caps at 720p.",
-          "price_last_verified": "2026-06-12",
-          "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
+            "price_note": "Fast tier caps at 720p.",
+            "price_last_verified": "2026-06-12",
+            "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
             "supports": [
               "prompt",
               "duration",
@@ -83,6 +101,21 @@
               "aspect_ratio": "16:9"
             },
             "output_path": "outputs[0]"
+          },
+          "kie": {
+            "id": "bytedance/seedance-2-fast",
+            "unit_price_per_second_usd": null,
+            "supports": [
+              "prompt",
+              "duration"
+            ],
+            "ref_arg": "first_frame_url",
+            "ref_kind": "scalar",
+            "default_args": {
+              "duration": 5,
+              "resolution": "720p"
+            },
+            "output_path": "outputs[0]"
           }
         }
       },
@@ -92,9 +125,9 @@
           "fal": {
             "id": "fal-ai/kling-video/v3/pro/image-to-video",
             "unit_price_per_second_usd": 0.168,
-          "unit_price_per_second_usd_audio_off": 0.112,
-          "price_last_verified": "2026-05-21",
-          "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
+            "unit_price_per_second_usd_audio_off": 0.112,
+            "price_last_verified": "2026-05-21",
+            "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
             "supports": [
               "prompt",
               "duration",
@@ -121,6 +154,23 @@
               "duration": 5
             },
             "output_path": "outputs[0]"
+          },
+          "kie": {
+            "id": "kling-3.0/video",
+            "unit_price_per_second_usd": null,
+            "supports": [
+              "prompt",
+              "duration"
+            ],
+            "ref_arg": "image_urls",
+            "ref_kind": "list",
+            "default_args": {
+              "duration": "5",
+              "mode": "pro",
+              "multi_shots": false,
+              "sound": true
+            },
+            "output_path": "outputs[0]"
           }
         }
       },
@@ -129,9 +179,9 @@
         "providers": {
           "fal": {
             "id": "fal-ai/kling-video/v3/4k/image-to-video",
-          "unit_price_per_second_usd": 0.42,
-          "price_last_verified": "2026-05-21",
-          "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
+            "unit_price_per_second_usd": 0.42,
+            "price_last_verified": "2026-05-21",
+            "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
             "supports": [
               "prompt",
               "duration",
@@ -155,6 +205,23 @@
             "ref_kind": "scalar",
             "default_args": {
               "duration": 5
+            },
+            "output_path": "outputs[0]"
+          },
+          "kie": {
+            "id": "kling-3.0/video",
+            "unit_price_per_second_usd": null,
+            "supports": [
+              "prompt",
+              "duration"
+            ],
+            "ref_arg": "image_urls",
+            "ref_kind": "list",
+            "default_args": {
+              "duration": "5",
+              "mode": "4K",
+              "multi_shots": false,
+              "sound": true
             },
             "output_path": "outputs[0]"
           }

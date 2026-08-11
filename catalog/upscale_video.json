@@ -12,9 +12,9 @@
               "720p_to_1080p": 0.02,
               "above_1080p": 0.08,
               "note": "Price DOUBLES if output is 60fps. Use --fps 30 to stay on the cheaper tier."
-          },
-          "price_last_verified": "2026-06-04",
-          "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
+            },
+            "price_last_verified": "2026-06-04",
+            "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
             "supports": [
               "upscale_factor"
             ],
@@ -34,6 +34,17 @@
               "upscale_factor"
             ],
             "note": "Only video_url and upscale_factor. No Topaz model preset, no recover_detail.",
+            "ref_arg": "video_url",
+            "ref_kind": "scalar",
+            "default_args": {},
+            "output_path": "outputs[0]"
+          },
+          "kie": {
+            "id": "topaz/video-upscale",
+            "unit_price_per_second_usd": null,
+            "supports": [
+              "upscale_factor"
+            ],
             "ref_arg": "video_url",
             "ref_kind": "scalar",
             "default_args": {},
