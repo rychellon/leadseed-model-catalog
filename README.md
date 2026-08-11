@@ -21,6 +21,6 @@ Every release receives a `vX.Y.Z` tag. Consumers pin tags and never fetch this r
 
 ## Refresh policy
 
-The weekly action fetches provider-owned data into `raw/`, re-verifies Fal prices through Fal's pricing API, and opens a draft PR. It never merges. Kie's public model inventory is its Market page rather than a documented list-models API, so that provider is captured verbatim as HTML and remains human-reviewed.
+The weekly action fetches provider-owned data into `raw/`, re-verifies Fal prices through Fal's pricing API, and opens a draft PR. It never merges. Kie has no documented list-models API and its Market page blocks GitHub-hosted runners, so the job captures Kie's own machine-readable documentation index (`docs.kie.ai/llms.txt`) and leaves pricing human-reviewed.
 
 The monthly action opens an issue grouped by provider for prices older than 45 days. A deliberate `price_stale_ack` keeps CI green but remains visible in that report.

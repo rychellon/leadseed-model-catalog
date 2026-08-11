@@ -70,10 +70,8 @@ async function fetchMuapi() {
 }
 
 async function fetchKie() {
-  const market = await fetchText("https://kie.ai/market");
-  const pricing = await fetchText("https://kie.ai/pricing");
-  fs.writeFileSync(path.join(RAW_DIR, "kie-market.html"), market);
-  fs.writeFileSync(path.join(RAW_DIR, "kie-pricing.html"), pricing);
+  const models = await fetchText("https://docs.kie.ai/llms.txt");
+  fs.writeFileSync(path.join(RAW_DIR, "kie-models.txt"), models);
 }
 
 function snapshotCatalog() {
