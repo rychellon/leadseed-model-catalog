@@ -7,11 +7,10 @@
         "providers": {
           "fal": {
             "id": "bytedance/seedance-2.0/image-to-video",
-            "unit_price_per_second_usd": 0.682,
+            "unit_price_per_second_usd": 0.014,
             "unit_price_per_second_usd_720p": 0.3034,
             "price_note": "Per second of OUTPUT at 1080p. Drop to 720p for cheap drafts.",
-            "price_last_verified": "2026-06-12",
-            "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
+            "price_last_verified": "2026-10-12",
             "supports": [
               "prompt",
               "duration",
@@ -68,10 +67,9 @@
         "providers": {
           "fal": {
             "id": "bytedance/seedance-2.0/fast/image-to-video",
-            "unit_price_per_second_usd": 0.2419,
+            "unit_price_per_second_usd": 0.0112,
             "price_note": "Fast tier caps at 720p.",
-            "price_last_verified": "2026-06-12",
-            "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
+            "price_last_verified": "2026-10-12",
             "supports": [
               "prompt",
               "duration",
@@ -124,10 +122,9 @@
         "providers": {
           "fal": {
             "id": "fal-ai/kling-video/v3/pro/image-to-video",
-            "unit_price_per_second_usd": 0.168,
+            "unit_price_per_second_usd": 0.14,
             "unit_price_per_second_usd_audio_off": 0.112,
-            "price_last_verified": "2026-05-21",
-            "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
+            "price_last_verified": "2026-10-12",
             "supports": [
               "prompt",
               "duration",
@@ -180,8 +177,7 @@
           "fal": {
             "id": "fal-ai/kling-video/v3/4k/image-to-video",
             "unit_price_per_second_usd": 0.42,
-            "price_last_verified": "2026-05-21",
-            "price_stale_ack": "Imported from the existing skill; scheduled source re-verification is pending.",
+            "price_last_verified": "2026-10-12",
             "supports": [
               "prompt",
               "duration",
