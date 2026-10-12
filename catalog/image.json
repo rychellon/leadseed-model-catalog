@@ -10,7 +10,7 @@
           "fal": {
             "id": "fal-ai/nano-banana-pro",
             "unit_price_usd": 0.15,
-            "price_last_verified": "2026-08-11",
+            "price_last_verified": "2026-10-12",
             "supports": [
               "prompt",
               "aspect_ratio",
@@ -67,7 +67,7 @@
           "fal": {
             "id": "fal-ai/nano-banana-pro/edit",
             "unit_price_usd": 0.15,
-            "price_last_verified": "2026-08-11",
+            "price_last_verified": "2026-10-12",
             "supports": [
               "prompt",
               "aspect_ratio",
@@ -130,7 +130,7 @@
           "fal": {
             "id": "fal-ai/nano-banana-2",
             "unit_price_usd": 0.08,
-            "price_last_verified": "2026-08-11",
+            "price_last_verified": "2026-10-12",
             "supports": [
               "prompt",
               "aspect_ratio",
@@ -186,7 +186,7 @@
           "fal": {
             "id": "fal-ai/nano-banana-2/edit",
             "unit_price_usd": 0.08,
-            "price_last_verified": "2026-08-11",
+            "price_last_verified": "2026-10-12",
             "supports": [
               "prompt",
               "aspect_ratio",
@@ -233,7 +233,7 @@
           "fal": {
             "id": "fal-ai/nano-banana",
             "unit_price_usd": 0.0398,
-            "price_last_verified": "2026-08-11",
+            "price_last_verified": "2026-10-12",
             "supports": [
               "prompt",
               "aspect_ratio",
@@ -282,7 +282,7 @@
           "fal": {
             "id": "fal-ai/nano-banana/edit",
             "unit_price_usd": 0.0398,
-            "price_last_verified": "2026-08-11",
+            "price_last_verified": "2026-10-12",
             "supports": [
               "prompt",
               "aspect_ratio",
@@ -338,7 +338,7 @@
             "id": "fal-ai/gpt-image-2",
             "unit_price_usd": 1,
             "price_unit": "units",
-            "price_last_verified": "2026-08-11",
+            "price_last_verified": "2026-10-12",
             "supports": [
               "prompt",
               "num_images"
