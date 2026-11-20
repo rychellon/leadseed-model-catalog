@@ -1,0 +1,91 @@
+{
+  "lipsync": {
+    "default": "sync-lipsync-v2-pro",
+    "models": {
+      "sync-lipsync-v2-pro": {
+        "best_for": "sync.so Lipsync 2 Pro. Best quality full-video lip re-matching: takes an existing talking-head video plus a new audio track and re-animates only the mouth. Identity, gestures and camera stay untouched. Use for dubbing an on-camera clip into another language.",
+        "providers": {
+          "fal": {
+            "id": "fal-ai/sync-lipsync/v2/pro",
+            "unit_price_per_second_usd": 0.083333,
+            "price_unit": "USD per second of input video ($5.00/min)",
+            "price_note": "Billed per minute at $5.00, prorated. A 9.433s job billed as 0.1666667 min (exactly 10.000s) = $0.8333, so duration is rounded UP -- but one invoice cannot tell whether the rule is ceil-to-whole-second or a 10s minimum charge. Quote ceil(seconds) and never quote below $0.8333 until a sub-10s job settles it.",
+            "price_last_verified": "2026-08-19",
+            "price_source": "Fal invoice 2026-08-19: fal-ai/sync-lipsync/v2/pro, 0.17 Minutes at $5.00/min net rate = $0.833333 for a 9.433s input. Wallet $10.0000 -> $9.1667.",
+            "supports": [
+              "sync_mode"
+            ],
+            "video_ref_arg": "video_url",
+            "video_ref_kind": "scalar",
+            "audio_ref_arg": "audio_url",
+            "default_args": {
+              "sync_mode": "cut_off"
+            },
+            "output_path": "video.url"
+          }
+        }
+      },
+      "sync-lipsync-v2": {
+        "best_for": "sync.so Lipsync 2, standard tier. Same interface as the pro model at lower quality. Only worth it when the face is small in frame or the clip is long enough that the pro price hurts.",
+        "providers": {
+          "fal": {
+            "id": "fal-ai/sync-lipsync/v2",
+            "unit_price_per_second_usd": null,
+            "price_note": "Not yet verified against a real invoice. Quote the pro rate as a ceiling until a job confirms it.",
+            "supports": [
+              "sync_mode"
+            ],
+            "video_ref_arg": "video_url",
+            "video_ref_kind": "scalar",
+            "audio_ref_arg": "audio_url",
+            "default_args": {
+              "sync_mode": "cut_off"
+            },
+            "output_path": "video.url"
+          }
+        }
+      },
+      "latentsync": {
+        "best_for": "LatentSync, open-source diffusion lipsync. Cheapest fal route. Noticeably softer around the mouth than sync.so; acceptable for drafts or when the face is small in frame.",
+        "providers": {
+          "fal": {
+            "id": "fal-ai/latentsync",
+            "unit_price_per_second_usd": null,
+            "price_note": "Not yet verified against a real invoice.",
+            "supports": [],
+            "video_ref_arg": "video_url",
+            "video_ref_kind": "scalar",
+            "audio_ref_arg": "audio_url",
+            "default_args": {},
+            "output_path": "video.url"
+          }
+        }
+      },
+      "volcengine-lipsync": {
+        "best_for": "Volcengine video-to-video lip sync, the only true video-in lipsync on Kie. Use when the fal balance is empty but Kie credits are available.",
+        "providers": {
+          "kie": {
+            "id": "volcengine/video-to-video-lip-sync",
+            "unit_price_per_second_usd": 0.04,
+            "price_unit": "USD per second (8 Kie credits/s at $0.005/credit)",
+            "price_note": "Kie bills generated duration PLUS input duration on video-input models, so budget roughly 2x the clip length. Audio must be clean vocal, <=10MB. Output is re-timed to 25fps.",
+            "price_last_verified": "2026-08-19",
+            "price_source": "Kie credit rate in meta.json x 8 credits/s from the model page.",
+            "supports": [
+              "mode"
+            ],
+            "video_ref_arg": "video_url",
+            "video_ref_kind": "scalar",
+            "audio_ref_arg": "audio_url",
+            "default_args": {
+              "mode": "basic",
+              "separate_vocal": false,
+              "align_audio": true
+            },
+            "output_path": "outputs[0]"
+          }
+        }
+      }
+    }
+  }
+}

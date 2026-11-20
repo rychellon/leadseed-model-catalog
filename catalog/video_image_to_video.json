@@ -174,6 +174,31 @@
           }
         }
       },
+      "gemini-omni-video": {
+        "best_for": "Google Gemini Omni Video. Best-in-class on-screen text rendering and native audio generation (steerable to pure sound design, no music). Kie-only. Use for Reels/Shorts overlays, on-screen callouts, and motion graphics where accurate rendered text matters more than photoreal motion.",
+        "providers": {
+          "kie": {
+            "id": "gemini-omni-video",
+            "unit_price_usd": null,
+            "price_note": "Kie does not publish a per-clip price for this model. Community/skill telemetry estimates ~$0.50/clip (roughly 100 credits at $0.005/credit). Treat as unverified until a real run's creditsConsumed confirms it, then update this field.",
+            "price_stale_ack": "No official price published as of 2026-08-17; estimate only, not source-verified.",
+            "supports": [
+              "prompt",
+              "duration",
+              "aspect_ratio"
+            ],
+            "note": "No resolution or seed param on this endpoint. duration is sent as a string (\"5\") regardless of whether --duration was passed -- build_call_args coerces it to match this catalog's default_args type. Reference image is optional (image_urls); Kie also reads aspect from the attached image when present, but aspect_ratio is sent explicitly too since the endpoint requires it for image-less / video-only requests. Accepts ONE source video as a second input via video_list (--source-video in generate.py) for true video-to-video -- footage untouched under a style, restyled, or used as motion/timing reference, depending on the prompt.",
+            "ref_arg": "image_urls",
+            "ref_kind": "list",
+            "video_ref_arg": "video_list",
+            "video_ref_kind": "segment_list",
+            "default_args": {
+              "duration": "5"
+            },
+            "output_path": "outputs[0]"
+          }
+        }
+      },
       "kling-v3-4k": {
         "best_for": "Native 4K Kling. Use only when 4K final delivery is required. Slower and more expensive.",
         "providers": {
@@ -224,6 +249,657 @@
               "sound": true
             },
             "output_path": "outputs[0]"
+          }
+        }
+      },
+      "minimax-h3-max": {
+        "best_for": "Fal's post-trained MiniMax H3. Tuned for prompt adherence and aesthetics over stock H3, with native audio and strong lip sync from dialogue written into the prompt. Best value in the H3 family and the one to reach for by default: at 768P it runs ~17x cheaper per second than seedance-2-pro at 1080p. Supports a last frame (end_image_url) for first->last transitions and a pinned soundtrack (target_audio_url).",
+        "providers": {
+          "fal": {
+            "id": "minimax/h3-max/image-to-video",
+            "unit_price_per_second_usd": 0.04,
+            "pricing_tiers_per_second_usd": {
+              "480P": 0.025,
+              "768P": 0.04,
+              "1080P": 0.08
+            },
+            "pricing_tiers_per_second_usd_after_promo": {
+              "480P": 0.05,
+              "768P": 0.08,
+              "1080P": 0.16
+            },
+            "price_unit": "second of output video",
+            "price_note": "Per second of output, billed by the resolution tier. These are fal's 50%-off launch rates; list price doubles when the promo ends. 1080P is a latent refinement of a native 768P generation, not a native render. Quote from pricing_tiers_per_second_usd for the tier actually requested -- unit_price_per_second_usd is only the 768P default.",
+            "price_last_verified": "2026-09-19",
+            "price_source": "https://fal.ai/models/minimax/h3-max/image-to-video",
+            "promo_price_expires": "2026-09-30",
+            "supports": [
+              "prompt",
+              "duration",
+              "resolution",
+              "seed"
+            ],
+            "duration_min": 5,
+            "duration_max": 15,
+            "resolution_values": [
+              "480P",
+              "768P",
+              "1080P"
+            ],
+            "resolution_aliases": {
+              "720p": "768P",
+              "1080p": "1080P",
+              "480p": "480P",
+              "2k": "2K",
+              "4k": "4K"
+            },
+            "note": "Fal-only. Image-to-video where the output canvas follows the input image (no aspect_ratio arg). end_image_url takes a LAST frame, so first+last drives a controlled transition between two stills; target_audio_url pins an existing soundtrack (>=2s, <=15MB) that replaces the generated audio. prompt_expansion_mode is left at fal's default 'balanced' ON PURPOSE. It runs MiniMax's H3-Context-IR stage, which MiniMax's own model card calls 'critical to the quality of the final output' — it rewrites the prompt into H3's native three-field form (integrated_multimodal_description / overall_soundscape / non_diegetic_music). The overall_soundscape field is what stops the model mumbling through non-speaking moments. Set it to 'disabled' ONLY when the prompt is already written in that three-field form by hand; disabling it on a plain prose prompt produced ~3s of unintelligible speech-shaped noise on a verified run.",
+            "ref_arg": "image_url",
+            "ref_kind": "scalar",
+            "end_ref_arg": "end_image_url",
+            "audio_ref_arg": "target_audio_url",
+            "default_args": {
+              "duration": 5,
+              "resolution": "768P",
+              "prompt_expansion_mode": "balanced"
+            },
+            "output_path": "video.url",
+            "audio_min_seconds": 2
+          }
+        }
+      },
+      "minimax-h3-max-turbo": {
+        "best_for": "Half-price, faster sibling of minimax-h3-max with the same parameters and resolution ceiling. Use it for iteration drafts and for testing a motion prompt before committing to the full-quality run.",
+        "providers": {
+          "fal": {
+            "id": "minimax/h3-max-turbo/image-to-video",
+            "unit_price_per_second_usd": 0.02,
+            "pricing_tiers_per_second_usd": {
+              "480P": 0.0125,
+              "768P": 0.02,
+              "1080P": 0.04
+            },
+            "pricing_tiers_per_second_usd_after_promo": {
+              "480P": 0.025,
+              "768P": 0.04,
+              "1080P": 0.08
+            },
+            "price_unit": "second of output video",
+            "price_note": "Per second of output, billed by the resolution tier. 50%-off launch rates; list price doubles when the promo ends. Cheapest video in this catalog -- a 5s 480P draft is ~$0.06. Quote from pricing_tiers_per_second_usd for the tier actually requested.",
+            "price_last_verified": "2026-09-19",
+            "price_source": "https://fal.ai/models/minimax/h3-max-turbo/image-to-video",
+            "promo_price_expires": "2026-09-30",
+            "supports": [
+              "prompt",
+              "duration",
+              "resolution",
+              "seed"
+            ],
+            "duration_min": 5,
+            "duration_max": 15,
+            "resolution_values": [
+              "480P",
+              "768P",
+              "1080P"
+            ],
+            "resolution_aliases": {
+              "720p": "768P",
+              "1080p": "1080P",
+              "480p": "480P",
+              "2k": "2K",
+              "4k": "4K"
+            },
+            "note": "Fal-only. Image-to-video where the output canvas follows the input image (no aspect_ratio arg). end_image_url takes a LAST frame, so first+last drives a controlled transition between two stills; target_audio_url pins an existing soundtrack (>=2s, <=15MB) that replaces the generated audio. prompt_expansion_mode is left at fal's default 'balanced' ON PURPOSE. It runs MiniMax's H3-Context-IR stage, which MiniMax's own model card calls 'critical to the quality of the final output' — it rewrites the prompt into H3's native three-field form (integrated_multimodal_description / overall_soundscape / non_diegetic_music). The overall_soundscape field is what stops the model mumbling through non-speaking moments. Set it to 'disabled' ONLY when the prompt is already written in that three-field form by hand; disabling it on a plain prose prompt produced ~3s of unintelligible speech-shaped noise on a verified run.",
+            "ref_arg": "image_url",
+            "ref_kind": "scalar",
+            "end_ref_arg": "end_image_url",
+            "audio_ref_arg": "target_audio_url",
+            "default_args": {
+              "duration": 5,
+              "resolution": "768P",
+              "prompt_expansion_mode": "balanced"
+            },
+            "output_path": "video.url",
+            "audio_min_seconds": 2
+          }
+        }
+      },
+      "minimax-h3": {
+        "best_for": "MiniMax's own stock H3 weights. The only model here that renders natively above 1080p -- 2K and 4K are real options. Use it when the deliverable genuinely needs that resolution; for everything else minimax-h3-max is better tuned and cheaper. Defaults to 2K, so a 5s clip is ~$0.65.",
+        "providers": {
+          "fal": {
+            "id": "minimax/h3/image-to-video",
+            "unit_price_per_second_usd": 0.13,
+            "pricing_tiers_per_second_usd": {
+              "480P": 0.05,
+              "768P": 0.06,
+              "2K": 0.13,
+              "4K": 0.16
+            },
+            "price_unit": "second of output video",
+            "price_note": "Per second of output, billed by the resolution tier. No launch discount on this endpoint. 480P and 768P are native generation modes; 2K and 4K upscale a 768P base render. The catalog default is fal's own 2K, which is the expensive tier -- pass --resolution 768P for drafts. Quote from pricing_tiers_per_second_usd for the tier actually requested.",
+            "price_last_verified": "2026-09-19",
+            "price_source": "https://fal.ai/models/minimax/h3/image-to-video",
+            "supports": [
+              "prompt",
+              "duration",
+              "resolution",
+              "seed"
+            ],
+            "duration_min": 5,
+            "duration_max": 15,
+            "resolution_values": [
+              "480P",
+              "768P",
+              "2K",
+              "4K"
+            ],
+            "resolution_aliases": {
+              "720p": "768P",
+              "1080p": "1080P",
+              "480p": "480P",
+              "2k": "2K",
+              "4k": "4K"
+            },
+            "note": "Fal-only. Image-to-video where the output canvas follows the input image (no aspect_ratio arg). end_image_url takes a LAST frame, so first+last drives a controlled transition between two stills; target_audio_url pins an existing soundtrack (>=2s, <=15MB) that replaces the generated audio. prompt_expansion_mode is left at fal's default 'balanced' ON PURPOSE. It runs MiniMax's H3-Context-IR stage, which MiniMax's own model card calls 'critical to the quality of the final output' — it rewrites the prompt into H3's native three-field form (integrated_multimodal_description / overall_soundscape / non_diegetic_music). The overall_soundscape field is what stops the model mumbling through non-speaking moments. Set it to 'disabled' ONLY when the prompt is already written in that three-field form by hand; disabling it on a plain prose prompt produced ~3s of unintelligible speech-shaped noise on a verified run.",
+            "ref_arg": "image_url",
+            "ref_kind": "scalar",
+            "end_ref_arg": "end_image_url",
+            "audio_ref_arg": "target_audio_url",
+            "default_args": {
+              "duration": 5,
+              "resolution": "2K",
+              "prompt_expansion_mode": "balanced"
+            },
+            "output_path": "video.url",
+            "audio_min_seconds": 2
+          }
+        }
+      },
+      "seedance-2.5-pro": {
+        "best_for": "Newest ByteDance Seedance, image-to-video (first frame, optional last frame). 4-30s in one call, native synchronized audio at no extra cost, and native multi-shot: timestamped shot beats in the prompt produce hard cuts inside one clip. Reach for it when one clip has to run past 10s, carry several cuts, or when Seedance 2.0 quality is not holding up. NOT a general default: it is expensive, so always quote the tier and duration first. For a character/product locked across shots from a reference SET, use seedance-2.5-reference; for cheap drafts, seedance-2.5-flash.",
+        "providers": {
+          "fal": {
+            "id": "bytedance/seedance-2.5/image-to-video",
+            "unit_price_per_second_usd": 0.473,
+            "pricing_tiers_per_second_usd": {
+              "480p": 0.2205,
+              "720p": 0.473,
+              "1080p": 1.164
+            },
+            "price_unit": "second of output video",
+            "price_note": "MOST EXPENSIVE VIDEO IN THIS CATALOG — quote before every run. Roughly $0.22/s at 480p, $0.47/s at 720p and $1.16/s at 1080p, so a 5s 1080p clip is ~$5.82: about 1.7x seedance-2-pro and ~30x minimax-h3-max at 768P. TRAP: fal's pricing API reports this endpoint as $0.0214 per 1000 TOKENS, not per second — tokens are roughly (width * height * (input_duration + output_duration) * 24) / 1024. Taking that 0.0214 for a per-second rate underquotes a 720p run by ~22x. The per-second figures above are fal's own conversions and are what to quote.",
+            "price_last_verified": "2026-11-17",
+            "price_source": "https://fal.ai/models/bytedance/seedance-2.5/image-to-video",
+            "supports": [
+              "prompt",
+              "duration",
+              "resolution"
+            ],
+            "duration_min": 4,
+            "duration_max": 30,
+            "resolution_values": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "resolution_aliases": {
+              "768p": "720p",
+              "2k": "1080p"
+            },
+            "note": "No seed input on this endpoint (the seed only comes back on the output), so any --seed job routes away from it. aspect_ratio is always 'auto' for image-to-video — the canvas follows the input image. duration is a STRING enum ('auto', then '4' through '30'); the catalog pins '5' instead of fal's 'auto' because 'auto' lets the model pick up to 30s, which at 1080p would silently turn a quoted $5.82 into ~$35. build_call_args coerces an int --duration to a string to match. end_image_url takes a last frame for a first->last transition. generate_audio is on and costs nothing extra (SFX, ambience and lip-synced speech). bitrate_mode 'high' requests a larger, higher-quality encode at the same price. The endpoint also offers '4k' and a 480p draft mode, but fal publishes no per-second 4K price, so 4k is left out of resolution_values on purpose: the script aborts rather than bill a tier nobody quoted.",
+            "ref_arg": "image_url",
+            "ref_kind": "scalar",
+            "end_ref_arg": "end_image_url",
+            "default_args": {
+              "duration": "5",
+              "resolution": "720p",
+              "generate_audio": true,
+              "bitrate_mode": "standard"
+            },
+            "output_path": "video.url"
+          },
+          "kie": {
+            "id": "bytedance/seedance-2-5",
+            "unit_price_per_second_usd": 0.315,
+            "pricing_tiers_per_second_usd": {
+              "480p": 0.14,
+              "720p": 0.315,
+              "1080p": 0.79
+            },
+            "price_unit": "second of output video",
+            "price_note": "Kie's published per-second rates without a reference video: 28/63/158 credits per second at 480p/720p/1080p ($0.14/$0.315/$0.79). About a third cheaper than fal at every tier. Kie reports the billed cost on the task, so this is only the up-front quote.",
+            "price_last_verified": "2026-11-17",
+            "price_source": "https://kie.ai/seedance-2-5",
+            "supports": [
+              "prompt",
+              "duration",
+              "resolution"
+            ],
+            "duration_min": 4,
+            "duration_max": 30,
+            "resolution_values": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "resolution_aliases": {
+              "768p": "720p",
+              "2k": "1080p"
+            },
+            "note": "Same Kie model as seedance-2.5-reference, used in first/last-frame mode: first_frame_url + last_frame_url. Kie refuses frames combined with reference_* inputs, which is why the reference set is a separate catalog key. No seed input. duration is an integer here (fal wants a string); -1 would mean automatic and is never sent. web_search stays off.",
+            "ref_arg": "first_frame_url",
+            "ref_kind": "scalar",
+            "end_ref_arg": "last_frame_url",
+            "default_args": {
+              "duration": 5,
+              "resolution": "720p",
+              "generate_audio": true,
+              "web_search": false
+            },
+            "output_path": "outputs[0]"
+          }
+        }
+      },
+      "seedance-2.5-reference": {
+        "best_for": "Seedance 2.5 reference-to-video: a reference SET (character sheet, product, location, wardrobe) instead of a first frame, cited in the prompt as @Image1, @Image2... 4-30s, native audio, takes aspect_ratio (9:16 for reels) and a seed. The right Seedance for multi-shot clips where the same person or product must stay identical across cuts. Same per-second price as seedance-2.5-pro; image references are not billed.",
+        "providers": {
+          "fal": {
+            "id": "bytedance/seedance-2.5/reference-to-video",
+            "unit_price_per_second_usd": 0.473,
+            "pricing_tiers_per_second_usd": {
+              "480p": 0.2205,
+              "720p": 0.473,
+              "1080p": 1.164
+            },
+            "price_unit": "second of output video",
+            "price_note": "Same rates as seedance-2.5-pro: ~$0.22/s at 480p, ~$0.47/s at 720p, ~$1.16/s at 1080p (fal's own per-second conversions for 16:9). Image references are free. TRAP: fal's pricing API reports $0.0214 per 1000 TOKENS, not per second; never quote that figure as a per-second rate.",
+            "price_last_verified": "2026-11-17",
+            "price_source": "https://fal.ai/models/bytedance/seedance-2.5/reference-to-video",
+            "supports": [
+              "prompt",
+              "duration",
+              "resolution",
+              "aspect_ratio",
+              "seed"
+            ],
+            "duration_min": 4,
+            "duration_max": 30,
+            "resolution_values": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "resolution_aliases": {
+              "768p": "720p",
+              "2k": "1080p"
+            },
+            "note": "Reference images go out as image_urls and MUST be cited in the prompt as @Image1, @Image2... in command-line order, or the model uses them however it likes. aspect_ratio defaults to 'auto' on the endpoint; pass --aspect-ratio 9:16 for reels. Only image references are wired: the endpoint also takes video_urls and audio_urls, but a video reference changes the billing (input seconds billed, x0.6 rate), which the cost estimate here does not model. 4k is offered by the endpoint but has no published per-second price, so it is left out. duration is a string enum; the catalog pins '5' because 'auto' can run to 30s.",
+            "ref_arg": "image_urls",
+            "ref_kind": "list",
+            "default_args": {
+              "duration": "5",
+              "resolution": "720p",
+              "generate_audio": true,
+              "task": "reference",
+              "bitrate_mode": "standard"
+            },
+            "output_path": "video.url"
+          },
+          "kie": {
+            "id": "bytedance/seedance-2-5",
+            "unit_price_per_second_usd": 0.315,
+            "pricing_tiers_per_second_usd": {
+              "480p": 0.14,
+              "720p": 0.315,
+              "1080p": 0.79
+            },
+            "price_unit": "second of output video",
+            "price_note": "Kie's per-second rates without a reference video: $0.14/$0.315/$0.79 at 480p/720p/1080p. Reference images and audio add no billable seconds.",
+            "price_last_verified": "2026-11-17",
+            "price_source": "https://kie.ai/seedance-2-5",
+            "supports": [
+              "prompt",
+              "duration",
+              "resolution",
+              "aspect_ratio"
+            ],
+            "duration_min": 4,
+            "duration_max": 30,
+            "resolution_values": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "resolution_aliases": {
+              "768p": "720p",
+              "2k": "1080p"
+            },
+            "note": "Up to 30 reference images as reference_image_urls, cited as @Image1, @Image2... No seed on Kie, so a --seed job routes to fal. aspect_ratio defaults to 'adaptive'. Only image references are wired (see the fal note).",
+            "ref_arg": "reference_image_urls",
+            "ref_kind": "list",
+            "default_args": {
+              "duration": 5,
+              "resolution": "720p",
+              "aspect_ratio": "adaptive",
+              "generate_audio": true,
+              "web_search": false
+            },
+            "output_path": "outputs[0]"
+          }
+        }
+      },
+      "seedance-2.5-flash": {
+        "best_for": "Seedance 2.5 Flash, the fast tier, image-to-video (first frame, optional last frame). 4-30s, native audio, 480p/720p only. The cheap way to draft 2.5 motion and multi-shot timing before spending on seedance-2.5-pro: roughly 35-65% of the Pro price.",
+        "providers": {
+          "fal": {
+            "id": "bytedance/seedance-2.5/flash/image-to-video",
+            "unit_price_per_second_usd": 0.3094,
+            "pricing_tiers_per_second_usd": {
+              "480p": 0.1442,
+              "720p": 0.3094
+            },
+            "price_unit": "second of output video",
+            "price_note": "~$0.144/s at 480p, ~$0.309/s at 720p (fal's own conversions). TRAP: fal's pricing API reports $0.014 per 1000 TOKENS, not per second.",
+            "price_last_verified": "2026-11-17",
+            "price_source": "https://fal.ai/models/bytedance/seedance-2.5/flash/image-to-video",
+            "supports": [
+              "prompt",
+              "duration",
+              "resolution"
+            ],
+            "duration_min": 4,
+            "duration_max": 30,
+            "resolution_values": [
+              "480p",
+              "720p"
+            ],
+            "resolution_aliases": {
+              "768p": "720p"
+            },
+            "note": "No seed, no 1080p. aspect_ratio is always 'auto' (follows the input image). duration is a string enum; pinned to '5'.",
+            "ref_arg": "image_url",
+            "ref_kind": "scalar",
+            "end_ref_arg": "end_image_url",
+            "default_args": {
+              "duration": "5",
+              "resolution": "720p",
+              "generate_audio": true,
+              "bitrate_mode": "standard"
+            },
+            "output_path": "video.url"
+          },
+          "kie": {
+            "id": "bytedance/seedance-2-5-flash",
+            "unit_price_per_second_usd": 0.205,
+            "pricing_tiers_per_second_usd": {
+              "480p": 0.0925,
+              "720p": 0.205
+            },
+            "price_unit": "second of output video",
+            "price_note": "Kie's rates without a reference video: 18.5/41 credits per second ($0.0925/$0.205) at 480p/720p. The cheapest Seedance 2.5 in the catalog.",
+            "price_last_verified": "2026-11-17",
+            "price_source": "https://kie.ai/seedance-2-5-flash",
+            "supports": [
+              "prompt",
+              "duration",
+              "resolution"
+            ],
+            "duration_min": 4,
+            "duration_max": 30,
+            "resolution_values": [
+              "480p",
+              "720p"
+            ],
+            "resolution_aliases": {
+              "768p": "720p"
+            },
+            "note": "first_frame_url + last_frame_url mode. No seed, no 1080p.",
+            "ref_arg": "first_frame_url",
+            "ref_kind": "scalar",
+            "end_ref_arg": "last_frame_url",
+            "default_args": {
+              "duration": 5,
+              "resolution": "720p",
+              "generate_audio": true,
+              "web_search": false
+            },
+            "output_path": "outputs[0]"
+          }
+        }
+      },
+      "seedance-2.5-flash-reference": {
+        "best_for": "Seedance 2.5 Flash with a reference set (@Image1, @Image2...): cheap drafts of multi-shot clips that keep a character or product consistent. 480p/720p, 4-30s, native audio, takes aspect_ratio.",
+        "providers": {
+          "fal": {
+            "id": "bytedance/seedance-2.5/flash/reference-to-video",
+            "unit_price_per_second_usd": 0.3094,
+            "pricing_tiers_per_second_usd": {
+              "480p": 0.1442,
+              "720p": 0.3094
+            },
+            "price_unit": "second of output video",
+            "price_note": "~$0.144/s at 480p, ~$0.309/s at 720p. Image references are free. TRAP: the pricing API says $0.014 per 1000 TOKENS.",
+            "price_last_verified": "2026-11-17",
+            "price_source": "https://fal.ai/models/bytedance/seedance-2.5/flash/reference-to-video",
+            "supports": [
+              "prompt",
+              "duration",
+              "resolution",
+              "aspect_ratio",
+              "seed"
+            ],
+            "duration_min": 4,
+            "duration_max": 30,
+            "resolution_values": [
+              "480p",
+              "720p"
+            ],
+            "resolution_aliases": {
+              "768p": "720p"
+            },
+            "note": "Up to 10 reference images as image_urls, cited as @Image1... Only image references are wired. duration pinned to '5'.",
+            "ref_arg": "image_urls",
+            "ref_kind": "list",
+            "default_args": {
+              "duration": "5",
+              "resolution": "720p",
+              "generate_audio": true,
+              "task": "reference",
+              "bitrate_mode": "standard"
+            },
+            "output_path": "video.url"
+          },
+          "kie": {
+            "id": "bytedance/seedance-2-5-flash",
+            "unit_price_per_second_usd": 0.205,
+            "pricing_tiers_per_second_usd": {
+              "480p": 0.0925,
+              "720p": 0.205
+            },
+            "price_unit": "second of output video",
+            "price_note": "$0.0925/s at 480p, $0.205/s at 720p without a reference video. Image references add no billable seconds.",
+            "price_last_verified": "2026-11-17",
+            "price_source": "https://kie.ai/seedance-2-5-flash",
+            "supports": [
+              "prompt",
+              "duration",
+              "resolution",
+              "aspect_ratio"
+            ],
+            "duration_min": 4,
+            "duration_max": 30,
+            "resolution_values": [
+              "480p",
+              "720p"
+            ],
+            "resolution_aliases": {
+              "768p": "720p"
+            },
+            "note": "reference_image_urls, cited as @Image1... No seed: a --seed job routes to fal.",
+            "ref_arg": "reference_image_urls",
+            "ref_kind": "list",
+            "default_args": {
+              "duration": 5,
+              "resolution": "720p",
+              "aspect_ratio": "adaptive",
+              "generate_audio": true,
+              "web_search": false
+            },
+            "output_path": "outputs[0]"
+          }
+        }
+      },
+      "minimax-h3-reference": {
+        "best_for": "Multi-reference H3 on MiniMax's stock weights: up to 9 subject/style images, 3 motion videos and 3 audio clips in one call, cited in the prompt as 'Image 1', 'Video 1' and so on. The right tool for locking a character, a product and a wardrobe across shots at once — image-to-video takes a single frame and cannot do this. First 5 images are free, so 5 is the natural budget.",
+        "providers": {
+          "fal": {
+            "id": "minimax/h3/reference-to-video",
+            "unit_price_per_second_usd": 0.13,
+            "pricing_tiers_per_second_usd": {
+              "480P": 0.05,
+              "768P": 0.06,
+              "2K": 0.13,
+              "4K": 0.16
+            },
+            "price_unit": "second of output video, plus reference inputs beyond the free allowance",
+            "price_note": "Per second of output by resolution tier, plus reference charges (see reference_allowance_note). No launch discount. Defaults to 2K, the expensive tier — pass --resolution 768P for drafts.",
+            "reference_allowance_note": "The first 5 reference images are free; each image beyond that costs $0.08. Five references is therefore the practical ceiling before the call gets more expensive.",
+            "price_last_verified": "2026-09-19",
+            "price_source": "https://fal.ai/models/minimax/h3/reference-to-video",
+            "supports": [
+              "prompt",
+              "duration",
+              "resolution",
+              "aspect_ratio",
+              "seed"
+            ],
+            "duration_min": 5,
+            "duration_max": 15,
+            "resolution_values": [
+              "480P",
+              "768P",
+              "2K",
+              "4K"
+            ],
+            "resolution_aliases": {
+              "720p": "768P",
+              "1080p": "1080P",
+              "480p": "480P",
+              "2k": "2K",
+              "4k": "4K"
+            },
+            "note": "Fal-only, and a DIFFERENT endpoint from the image-to-video entries: there is no first/last frame here. Images are subject/style references (up to 9), videos are motion references (up to 3, 2-15s each, 15s combined) and audio clips are sound references (up to 3, same limits) — at most 12 reference files in total. THE PROMPT MUST CITE THEM BY MODALITY AND ORDER — 'Image 1', 'Image 2', 'Video 1', 'Audio 1' — in the order they were passed on the command line, or the references are ignored. Unlike the image-to-video entries this one takes aspect_ratio (default 'adaptive', which follows the first reference). prompt_expansion_mode is left at fal's default 'balanced' ON PURPOSE. It runs MiniMax's H3-Context-IR stage, which MiniMax's own model card calls 'critical to the quality of the final output' — it rewrites the prompt into H3's native three-field form (integrated_multimodal_description / overall_soundscape / non_diegetic_music). The overall_soundscape field is what stops the model mumbling through non-speaking moments. Set it to 'disabled' ONLY when the prompt is already written in that three-field form by hand; disabling it on a plain prose prompt produced ~3s of unintelligible speech-shaped noise on a verified run.",
+            "ref_arg": "reference_image_urls",
+            "ref_kind": "list",
+            "video_ref_arg": "reference_video_urls",
+            "video_ref_kind": "list",
+            "audio_ref_arg": "reference_audio_urls",
+            "audio_ref_kind": "list",
+            "default_args": {
+              "duration": 5,
+              "resolution": "2K",
+              "prompt_expansion_mode": "balanced"
+            },
+            "output_path": "video.url"
+          }
+        }
+      },
+      "minimax-h3-max-reference": {
+        "best_for": "Fal's post-trained H3 with the same multi-reference inputs as minimax-h3-reference, at better prompt adherence and half the per-second cost at the 768P default. Start here for multi-reference work; go to minimax-h3-reference only when the deliverable needs native 2K/4K.",
+        "providers": {
+          "fal": {
+            "id": "minimax/h3-max/reference-to-video",
+            "unit_price_per_second_usd": 0.08,
+            "pricing_tiers_per_second_usd": {
+              "480P": 0.05,
+              "768P": 0.08,
+              "1080P": 0.16
+            },
+            "price_unit": "second of output video, plus reference inputs beyond the free allowance",
+            "price_note": "Per second of output by resolution tier, plus reference charges (see reference_allowance_note). These are LIST prices — unlike minimax-h3-max's image-to-video endpoint, this one carries no launch discount.",
+            "reference_allowance_note": "Reference images are billed as TOKENS, not per image: the first 4096 tokens are free, then $0.02 per 1K tokens. A 1024x1024 image is ~1K tokens, so roughly 4 of those are free and each extra costs ~$0.02; a 2048x2048 image is ~4K tokens, so only the first is free and each extra costs ~$0.08. Downscaling references to about 1024x1024 before upload is what keeps them free.",
+            "price_last_verified": "2026-09-19",
+            "price_source": "https://fal.ai/models/minimax/h3-max/reference-to-video",
+            "supports": [
+              "prompt",
+              "duration",
+              "resolution",
+              "aspect_ratio",
+              "seed"
+            ],
+            "duration_min": 5,
+            "duration_max": 15,
+            "resolution_values": [
+              "480P",
+              "768P",
+              "1080P"
+            ],
+            "resolution_aliases": {
+              "720p": "768P",
+              "1080p": "1080P",
+              "480p": "480P",
+              "2k": "2K",
+              "4k": "4K"
+            },
+            "note": "Fal-only, and a DIFFERENT endpoint from the image-to-video entries: there is no first/last frame here. Images are subject/style references (up to 9), videos are motion references (up to 3, 2-15s each, 15s combined) and audio clips are sound references (up to 3, same limits) — at most 12 reference files in total. THE PROMPT MUST CITE THEM BY MODALITY AND ORDER — 'Image 1', 'Image 2', 'Video 1', 'Audio 1' — in the order they were passed on the command line, or the references are ignored. Unlike the image-to-video entries this one takes aspect_ratio (default 'adaptive', which follows the first reference). prompt_expansion_mode is left at fal's default 'balanced' ON PURPOSE. It runs MiniMax's H3-Context-IR stage, which MiniMax's own model card calls 'critical to the quality of the final output' — it rewrites the prompt into H3's native three-field form (integrated_multimodal_description / overall_soundscape / non_diegetic_music). The overall_soundscape field is what stops the model mumbling through non-speaking moments. Set it to 'disabled' ONLY when the prompt is already written in that three-field form by hand; disabling it on a plain prose prompt produced ~3s of unintelligible speech-shaped noise on a verified run.",
+            "ref_arg": "reference_image_urls",
+            "ref_kind": "list",
+            "video_ref_arg": "reference_video_urls",
+            "video_ref_kind": "list",
+            "audio_ref_arg": "reference_audio_urls",
+            "audio_ref_kind": "list",
+            "default_args": {
+              "duration": 5,
+              "resolution": "768P",
+              "prompt_expansion_mode": "balanced"
+            },
+            "output_path": "video.url"
+          }
+        }
+      },
+      "minimax-h3-lipsync": {
+        "best_for": "Still image + your own voiceover -> a talking video whose mouth matches YOUR audio. Has no prompt field at all, so it cannot invent dialogue or mumble to fill time — the correct tool for UGC and client work where the VO is already approved and locked. Length is dictated by the audio (5s minimum, clipped at 14.8s).",
+        "providers": {
+          "fal": {
+            "id": "minimax/h3-max/lip-sync/image-to-video",
+            "unit_price_per_second_usd": 0.08,
+            "pricing_tiers_per_second_usd": {
+              "480P": 0.05,
+              "768P": 0.08,
+              "1080P": 0.16,
+              "2K": 0.32
+            },
+            "price_unit": "second of output video",
+            "price_note": "Per second of output by resolution tier. List prices, no launch discount. The output length is the AUDIO's length (clipped at 14.8s), not a --duration you choose, so quote from the audio file's real duration: ffprobe it, then multiply by the tier.",
+            "price_last_verified": "2026-09-19",
+            "price_source": "https://fal.ai/models/minimax/h3-max/lip-sync/image-to-video",
+            "supports": [
+              "resolution",
+              "seed"
+            ],
+            "resolution_values": [
+              "480P",
+              "768P",
+              "1080P",
+              "2K"
+            ],
+            "resolution_aliases": {
+              "720p": "768P",
+              "1080p": "1080P",
+              "480p": "480P",
+              "2k": "2K"
+            },
+            "note": "Fal-only, and the ONLY entry here that takes a still image plus a locked voiceover and drives the mouth from that audio — this is the fix for 'I already have the VO'. NO PROMPT: the endpoint has no prompt field, so nothing is invented and the mumbling failure mode cannot occur. Audio must be at least 5s; anything past 14.8s is clipped to the first 14.8s and the video matches that clipped length, so --duration is meaningless here and is not sent. Image aspect ratio must be between 0.4 and 2.5. enable_transcription (default false) transcribes the audio to guide the sync — turn it on for dense or fast speech. Distinct from the `lipsync` modality, which re-matches a mouth in existing FOOTAGE; this one starts from a still.",
+            "ref_arg": "image_url",
+            "ref_kind": "scalar",
+            "audio_ref_arg": "audio_url",
+            "default_args": {
+              "resolution": "768P",
+              "enable_transcription": false
+            },
+            "output_path": "video.url",
+            "audio_min_seconds": 5
           }
         }
       }
